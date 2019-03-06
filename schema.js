@@ -1,5 +1,4 @@
 import gql  from 'graphql-tag';
-import jwt from 'jsonwebtoken';
 
 export default gql`
 
@@ -28,7 +27,7 @@ export default gql`
 	type Query {
 		allUsers: [User!]!
 		getUser(username: String, id: Int): User!
-		messages(chatroomId:String): [Message]
+		messages(chatroomId:String!): [Message]
 		users(chatroomId:Int): [User]
 		user(id:Int, search:String):User
 	}
@@ -37,14 +36,15 @@ export default gql`
     	register(username: String!, password: String!, email: String!): String!
     	login(username: String, password: String, used_token: String): String!
     	logout(logged_token: String!): String!
-    	updateUser(username: String!, newUsername: String, password: String!, newPassword: String, token: String!): String
+    	updateUser(username: String, newUsername: String, password: String, newPassword: String, token: String!): [String]
     	deleteUser(id: Int!): Int!
 		addMessage(text: String!, token: String!, chatroomId: String!): Message
 		banUser(token: String!, username: String!): String!
+		validToken(token: String!): String
 	}
 
 	type Subscription {
-		messageAdded(chatroomId: String): Message
+		messageAdded(chatroomId: String!): Message
 	}
 
 	schema {
